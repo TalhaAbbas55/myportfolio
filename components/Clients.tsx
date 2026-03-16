@@ -2,16 +2,21 @@
 
 import React from "react";
 
-import { companies, testimonials } from "@/data";
+import { highlights, testimonials } from "@/data";
 import { InfiniteMovingCards } from "./ui/InfiniteCards";
 
 const Clients = () => {
   return (
-    <section id="testimonials" className="py-20">
+    <section id="skills" className="py-20">
       <h1 className="heading">
-        Kind words from
-        <span className="text-purple"> satisfied clients</span>
+        Core <span className="text-purple">capabilities</span>
       </h1>
+
+      <p className="text-center text-white-200 mt-4 max-w-3xl mx-auto">
+        Broad software engineering experience across application architecture,
+        backend delivery, product systems, Web3 experimentation, and reliable
+        production execution.
+      </p>
 
       <div className="flex flex-col items-center max-lg:mt-10">
         <div
@@ -25,23 +30,19 @@ const Clients = () => {
           />
         </div>
 
-        <div className="flex flex-wrap items-center justify-center gap-4 md:gap-16 max-lg:mt-10">
-          {companies.map((company) => (
-            <React.Fragment key={company.id}>
-              <div className="flex md:max-w-60 max-w-32 gap-2">
-                <img
-                  src={company.img}
-                  alt={company.name}
-                  className="md:w-10 w-5"
-                />
-                <img
-                  src={company.nameImg}
-                  alt={company.name}
-                  width={company.id === 4 || company.id === 5 ? 100 : 150}
-                  className="md:w-24 w-20"
-                />
-              </div>
-            </React.Fragment>
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 w-full max-lg:mt-10">
+          {highlights.map((item) => (
+            <div
+              key={item.id}
+              className="rounded-2xl border border-white/10 bg-black-200 px-6 py-5"
+            >
+              <p className="text-sm uppercase tracking-[0.2em] text-purple">
+                {item.label}
+              </p>
+              <p className="text-white mt-3 text-base leading-7">
+                {item.value}
+              </p>
+            </div>
           ))}
         </div>
       </div>
