@@ -1,8 +1,9 @@
+import dynamic from "next/dynamic";
 import { useState } from "react";
 import { IoCopyOutline } from "react-icons/io5";
 
-// Also install this npm i --save-dev @types/react-lottie
-import Lottie from "react-lottie";
+// Dynamically load Lottie on the client to avoid SSR build issues (react-lottie uses the DOM).
+const Lottie = dynamic(() => import("react-lottie"), { ssr: false });
 
 import { personalInfo, stackLists } from "@/data";
 import { cn } from "@/lib/utils";

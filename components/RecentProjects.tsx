@@ -34,7 +34,7 @@ const RecentProjects = () => {
 
                 <div className="absolute top-4 right-4 z-30 w-72 max-w-[calc(100%-2rem)] rounded-2xl border border-white/20 bg-black/90 p-4 text-xs text-white opacity-0 transition-opacity duration-200 group-hover:opacity-100">
                   <div className="max-h-40 overflow-auto pr-2 leading-relaxed">
-                    {item.details || item.des}
+                    {item.details}
                   </div>
                 </div>
               </div>
@@ -46,7 +46,7 @@ const RecentProjects = () => {
               <p className="text-sm text-purple mt-2">{item.period}</p>
 
               <p className="text-sm text-white-200 mt-2 line-clamp-2">
-                {item.summary || item.des}
+                {item.summary}
               </p>
 
               <div className="flex items-center justify-between mt-7 mb-3">
