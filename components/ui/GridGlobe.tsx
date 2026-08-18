@@ -384,59 +384,30 @@ const GridGlobe = () => {
     const el = containerRef.current;
     if (!el) return;
 
-    let observer: IntersectionObserver | undefined;
-    let idleId: number | undefined;
-    let cancelled = false;
-
-    // The globe is decorative but expensive. Waiting for the page to finish
-    // loading before even starting the three.js fetch keeps it from competing
-    // for bandwidth with the webfont and the hero, which is what actually
-    // decides LCP. Only then do we care whether it is on screen.
-    const startWatching = () => {
-      if (cancelled) return;
-
-      // No IntersectionObserver (very old browsers): just render it.
-      if (typeof IntersectionObserver === "undefined") {
-        setShouldRender(true);
-        return;
-      }
-
-      observer = new IntersectionObserver(
-        (entries) => {
-          if (entries.some((entry) => entry.isIntersecting)) {
-            setShouldRender(true);
-            observer?.disconnect();
-          }
-        },
-        // Start fetching slightly before it scrolls in so it feels instant.
-        { rootMargin: "200px" },
-      );
-      observer.observe(el);
-    };
-
-    const afterLoad = () => {
-      if (typeof requestIdleCallback === "function") {
-        idleId = requestIdleCallback(startWatching, { timeout: 2000 });
-      } else {
-        idleId = window.setTimeout(startWatching, 200);
-      }
-    };
-
-    if (document.readyState === "complete") {
-      afterLoad();
-    } else {
-      window.addEventListener("load", afterLoad, { once: true });
+    // No IntersectionObserver (very old browsers): just render it.
+    if (typeof IntersectionObserver === "undefined") {
+      setShouldRender(true);
+      return;
     }
 
-    return () => {
-      cancelled = true;
-      observer?.disconnect();
-      window.removeEventListener("load", afterLoad);
-      if (idleId !== undefined) {
-        if (typeof cancelIdleCallback === "function") cancelIdleCallback(idleId);
-        else clearTimeout(idleId);
-      }
-    };
+    // three.js is loaded as its own async chunk, so it never blocks the initial
+    // render. Watching starts immediately on mount rather than waiting for
+    // window `load` + an idle callback: that extra gate made the globe visibly
+    // pop in late, and it was not buying anything since LCP here is hero text
+    // that has already painted by the time this effect runs.
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          setShouldRender(true);
+          observer.disconnect();
+        }
+      },
+      // Start fetching well before it scrolls in so it feels instant.
+      { rootMargin: "400px" },
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
   }, []);
 
   return (

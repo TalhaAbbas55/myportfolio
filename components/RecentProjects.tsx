@@ -24,14 +24,23 @@ const RecentProjects = () => {
         Selected <span className="text-purple">projects</span>
       </h2>
       <div className="flex flex-wrap items-center justify-center p-4 gap-16 mt-10">
-        {projects.map((item, projectIndex) => (
+        {projects.map((item) => (
           <div
-            className="group lg:min-h-[32.5rem] h-[25rem] flex items-center justify-center sm:w-96 w-[80vw] cursor-pointer"
+            // PinContainer renders its children inside absolutely-positioned,
+            // 3D-transformed wrappers, so the content cannot push this box
+            // taller. That means this height has to be big enough for the
+            // content on its own - see the rem-based image height below.
+            className="group h-[27rem] lg:h-[35rem] flex items-center justify-center sm:w-96 w-[80vw] cursor-pointer"
             key={item.id}
             onClick={() => window.open(item.link, "_blank")}
           >
             <PinContainer title={item.linkTitle} href={item.link}>
-              <div className="relative flex items-center justify-center sm:w-96 w-[80vw] overflow-visible h-[20vh] lg:h-[30vh] mb-10">
+              {/* Height is in rem, not vh. It used to be `h-[20vh] lg:h-[30vh]`
+                  while the card wrapper was a fixed 25rem/32.5rem, so on tall
+                  viewports the content outgrew the wrapper and spilled into the
+                  row below (~106px of overlap at 1400px tall). A rem height
+                  keeps the card a constant size at every viewport. */}
+              <div className="relative flex items-center justify-center sm:w-96 w-[80vw] overflow-visible h-[15rem] lg:h-[17rem] mb-10">
                 <div
                   className="relative w-full h-full overflow-hidden lg:rounded-3xl"
                   style={{ backgroundColor: "#13162D" }}
@@ -51,16 +60,28 @@ const RecentProjects = () => {
                   alt={`${item.title} screenshot`}
                   width={SHOT_SIZE[item.img]?.width ?? 900}
                   height={SHOT_SIZE[item.img]?.height ?? 455}
-                  // Only the first two cards are plausibly near the fold.
-                  loading={projectIndex < 2 ? "eager" : "lazy"}
+                  // All lazy: this section starts ~2500px down, and `eager` made
+                  // next/image emit a <link rel=preload> for the first two,
+                  // which competed with the hero's critical path for images
+                  // nobody had scrolled to yet. The browser's own lazy loading
+                  // fetches these well before they enter the viewport, and each
+                  // is only ~15-20 KB as AVIF.
+                  loading="lazy"
                   sizes="(max-width: 640px) 80vw, 384px"
                   className="z-10 absolute bottom-0"
                 />
 
-                <div className="absolute top-4 right-4 z-30 w-72 max-w-[calc(100%-2rem)] rounded-2xl border border-white/20 bg-black/90 p-4 text-xs text-white opacity-0 transition-opacity duration-200 group-hover:opacity-100">
-                  <div className="max-h-40 overflow-auto pr-2 leading-relaxed">
+                {/* Detail overlay. Was a narrow 18rem box of 12px text sitting
+                    over the screenshot, which was very hard to read; it now
+                    fills the whole image area with a near-opaque backdrop and
+                    larger type. */}
+                <div className="absolute inset-0 z-30 flex flex-col justify-center gap-2 overflow-hidden rounded-2xl border border-white/15 bg-[#05070f]/[0.97] p-5 opacity-0 transition-opacity duration-200 group-hover:opacity-100 lg:rounded-3xl">
+                  <p className="text-[0.7rem] uppercase tracking-[0.2em] text-purple">
+                    About this project
+                  </p>
+                  <p className="overflow-auto text-sm leading-relaxed text-white-100">
                     {item.details}
-                  </div>
+                  </p>
                 </div>
               </div>
 
