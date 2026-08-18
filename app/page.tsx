@@ -1,5 +1,3 @@
-"use client";
-
 import { navItems } from "@/data";
 
 import Hero from "@/components/Hero";
@@ -11,6 +9,9 @@ import Experience from "@/components/Experience";
 import RecentProjects from "@/components/RecentProjects";
 import { FloatingNav } from "@/components/ui/FloatingNavbar";
 
+// This is a server component now (it used to be "use client"), so the hero and
+// every section below ships as real HTML in the first response instead of
+// waiting on the client bundle to render anything at all.
 const Home = () => {
   return (
     <main className="relative bg-black-100 flex justify-center items-center flex-col overflow-hidden mx-auto sm:px-10 px-5">

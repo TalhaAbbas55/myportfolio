@@ -1,16 +1,19 @@
+"use client";
+
+import Image from "next/image";
 import dynamic from "next/dynamic";
 import { useState } from "react";
 import { IoCopyOutline } from "react-icons/io5";
-
-// Dynamically load Lottie on the client to avoid SSR build issues (react-lottie uses the DOM).
-const Lottie = dynamic(() => import("react-lottie"), { ssr: false });
 
 import { personalInfo, stackLists } from "@/data";
 import { cn } from "@/lib/utils";
 import { BackgroundGradientAnimation } from "./GradientBg";
 import GridGlobe from "./GridGlobe";
-import animationData from "@/data/confetti.json";
 import MagicButton from "../MagicButton";
+
+// lottie-react is only needed for the confetti burst after a successful copy,
+// so it stays out of the initial bundle.
+const Lottie = dynamic(() => import("lottie-react"), { ssr: false });
 
 export const BentoGrid = ({
   className,
@@ -29,6 +32,67 @@ export const BentoGrid = ({
     >
       {children}
     </div>
+  );
+};
+
+/**
+ * Intrinsic sizes of the original Figma exports. The exports were oversized
+ * bitmaps wrapped in SVG (a 464x300 box carrying a 2880x2048 PNG); they are now
+ * right-sized WebP. Declaring the original display sizes here keeps the layout
+ * byte-identical to before and gives the browser an aspect ratio up front, so
+ * swapping the assets cost no layout shift.
+ */
+const IMG_SIZE: Record<string, { width: number; height: number }> = {
+  "/b1.webp": { width: 689, height: 541 },
+  "/grid.webp": { width: 351, height: 180 },
+  "/b5.webp": { width: 500, height: 383 },
+  "/b4.svg": { width: 208, height: 96 },
+};
+
+/**
+ * Renders decorative bento artwork. Raster assets go through next/image for
+ * responsive srcsets; the hand-authored vectors are already a couple of KB, so
+ * routing them through the optimizer would only add a round trip.
+ */
+const BentoArt = ({
+  src,
+  className,
+  priority,
+}: {
+  src: string;
+  className?: string;
+  priority?: boolean;
+}) => {
+  const size = IMG_SIZE[src] ?? { width: 500, height: 500 };
+
+  if (src.endsWith(".svg")) {
+    return (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img
+        src={src}
+        alt=""
+        aria-hidden="true"
+        width={size.width}
+        height={size.height}
+        loading="lazy"
+        decoding="async"
+        className={className}
+      />
+    );
+  }
+
+  return (
+    <Image
+      src={src}
+      alt=""
+      aria-hidden="true"
+      width={size.width}
+      height={size.height}
+      priority={priority}
+      loading={priority ? undefined : "lazy"}
+      sizes="(max-width: 768px) 100vw, 50vw"
+      className={className}
+    />
   );
 };
 
@@ -56,20 +120,24 @@ export const BentoGridItem = ({
   const rightLists = stackLists.right;
 
   const [copied, setCopied] = useState(false);
+  // confetti.json is ~600KB. It used to be a static import, which parked the
+  // whole payload in the initial page chunk for an animation that only ever
+  // plays after a click. It is now fetched on demand.
+  const [confetti, setConfetti] = useState<unknown>(null);
 
-  const defaultOptions = {
-    loop: copied,
-    autoplay: copied,
-    animationData: animationData,
-    rendererSettings: {
-      preserveAspectRatio: "xMidYMid slice",
-    },
-  };
-
-  const handleCopy = () => {
-    const text = personalInfo.email;
-    navigator.clipboard.writeText(text);
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(personalInfo.email);
+    } catch {
+      // Clipboard access can be denied (insecure origin, permissions);
+      // still give the user feedback rather than failing silently.
+    }
     setCopied(true);
+
+    if (!confetti) {
+      const mod = await import("@/data/confetti.json");
+      setConfetti(mod.default);
+    }
   };
 
   return (
@@ -91,9 +159,10 @@ export const BentoGridItem = ({
       <div className={`${id === 6 && "flex justify-center"} h-full`}>
         <div className="w-full h-full absolute">
           {img && (
-            <img
+            <BentoArt
               src={img}
-              alt={img}
+              // The first bento tile is above the fold, so it is worth fetching eagerly.
+              priority={id === 1}
               className={cn(imgClassName, "object-cover object-center ")}
             />
           )}
@@ -104,10 +173,8 @@ export const BentoGridItem = ({
           } `}
         >
           {spareImg && (
-            <img
+            <BentoArt
               src={spareImg}
-              alt={spareImg}
-              //   width={220}
               className="object-cover object-center w-full h-full"
             />
           )}
@@ -122,7 +189,7 @@ export const BentoGridItem = ({
         <div
           className={cn(
             titleClassName,
-            "group-hover/bento:translate-x-2 transition duration-200 relative md:h-full min-h-40 flex flex-col px-5 p-5 lg:p-10",
+            `group-hover/bento:translate-x-2 transition duration-200 relative md:h-full min-h-40 flex flex-col px-5 p-5 lg:p-10 ${id === 2 ? "!pb-[150px]" : ""}`,
           )}
         >
           {/* change the order of the title and des, font-extralight, remove text-xs text-neutral-600 dark:text-neutral-300 , change the text-color */}
@@ -178,8 +245,17 @@ export const BentoGridItem = ({
                   copied ? "block" : "block"
                 }`}
               >
-                {/* <img src="/confetti.gif" alt="confetti" /> */}
-                <Lottie options={defaultOptions} height={200} width={400} />
+                {confetti != null && (
+                  <Lottie
+                    animationData={confetti}
+                    loop={false}
+                    autoplay
+                    style={{ height: 200, width: 400 }}
+                    rendererSettings={{
+                      preserveAspectRatio: "xMidYMid slice",
+                    }}
+                  />
+                )}
               </div>
 
               <MagicButton

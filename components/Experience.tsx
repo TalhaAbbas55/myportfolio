@@ -3,19 +3,35 @@ import React from "react";
 import { workExperience } from "@/data";
 import { Button } from "./ui/MovingBorders";
 
+/**
+ * Rendered size of each thumbnail, matching the original Figma exports.
+ *
+ * These thumbnails are flex items whose used width settles at their intrinsic
+ * size, so exp3.webp is encoded at exactly the 103x98 the old SVG displayed at
+ * (a 2x file rendered 128px wide and threw the row off). Declaring the sizes
+ * here also means the row reserves space before the lazy images land.
+ */
+const THUMB_SIZE: Record<string, { width: number; height: number }> = {
+  "/exp1.svg": { width: 95, height: 87 },
+  "/exp2.svg": { width: 98, height: 97 },
+  "/exp3.webp": { width: 103, height: 98 },
+  "/exp4.svg": { width: 123, height: 87 },
+};
+
 const Experience = () => {
   return (
     <section className="py-20 w-full" id="experience">
-      <h1 className="heading">
+      <h2 className="heading">
         Professional <span className="text-purple">experience</span>
-      </h1>
+      </h2>
 
       <div className="w-full mt-12 grid lg:grid-cols-4 grid-cols-1 gap-10">
-        {workExperience.map((card) => (
+        {workExperience.map((card, index) => (
           <Button
             key={card.id}
-            //   random duration will be fun , I think , may be not
-            duration={Math.floor(Math.random() * 10000) + 10000}
+            // Was Math.random(), which made the output differ between builds.
+            // Staggering by index keeps the varied look and stays deterministic.
+            duration={10000 + index * 2500}
             borderRadius="1.75rem"
             style={{
               //   add these two
@@ -30,18 +46,24 @@ const Experience = () => {
             className="flex-1 text-black dark:text-white border-neutral-200 dark:border-slate-800"
           >
             <div className="flex lg:flex-row flex-col lg:items-center p-3 py-6 md:p-5 lg:p-10 gap-2">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={card.thumbnail}
-                alt={card.thumbnail}
+                alt=""
+                aria-hidden="true"
+                width={THUMB_SIZE[card.thumbnail]?.width}
+                height={THUMB_SIZE[card.thumbnail]?.height}
+                loading="lazy"
+                decoding="async"
                 className="lg:w-32 md:w-20 w-16"
               />
               <div className="lg:ms-5">
                 <p className="text-start text-sm uppercase tracking-[0.2em] text-purple">
                   {card.company}
                 </p>
-                <h1 className="text-start text-xl md:text-2xl font-bold">
+                <h3 className="text-start text-xl md:text-2xl font-bold">
                   {card.title}
-                </h1>
+                </h3>
                 <p className="text-start text-sm text-white-200 mt-2">
                   {card.period} | {card.location}
                 </p>

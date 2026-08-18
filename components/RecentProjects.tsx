@@ -1,18 +1,30 @@
 "use client";
 
+import Image from "next/image";
 import { FaLocationArrow } from "react-icons/fa6";
 
 import { projects } from "@/data";
 import { PinContainer } from "./ui/Pin";
 
+// Real dimensions of each screenshot. They differ slightly, so passing one
+// hardcoded pair would distort a couple of the cards.
+const SHOT_SIZE: Record<string, { width: number; height: number }> = {
+  "/apps/OpenDrawing.webp": { width: 900, height: 455 },
+  "/apps/OurOffice.webp": { width: 900, height: 455 },
+  "/apps/aabBooks.webp": { width: 900, height: 455 },
+  "/apps/curlCompass.webp": { width: 900, height: 419 },
+  "/apps/customWebsitesClub.webp": { width: 900, height: 455 },
+  "/apps/neverLeft.webp": { width: 900, height: 444 },
+};
+
 const RecentProjects = () => {
   return (
     <section className="py-20" id="projects">
-      <h1 className="heading">
+      <h2 className="heading">
         Selected <span className="text-purple">projects</span>
-      </h1>
+      </h2>
       <div className="flex flex-wrap items-center justify-center p-4 gap-16 mt-10">
-        {projects.map((item) => (
+        {projects.map((item, projectIndex) => (
           <div
             className="group lg:min-h-[32.5rem] h-[25rem] flex items-center justify-center sm:w-96 w-[80vw] cursor-pointer"
             key={item.id}
@@ -24,11 +36,24 @@ const RecentProjects = () => {
                   className="relative w-full h-full overflow-hidden lg:rounded-3xl"
                   style={{ backgroundColor: "#13162D" }}
                 >
-                  <img src="/bg.png" alt="bgimg" />
+                  <Image
+                    src="/bg.webp"
+                    alt=""
+                    aria-hidden="true"
+                    width={552}
+                    height={330}
+                    loading="lazy"
+                    sizes="(max-width: 640px) 80vw, 384px"
+                  />
                 </div>
-                <img
+                <Image
                   src={item.img}
-                  alt="cover"
+                  alt={`${item.title} screenshot`}
+                  width={SHOT_SIZE[item.img]?.width ?? 900}
+                  height={SHOT_SIZE[item.img]?.height ?? 455}
+                  // Only the first two cards are plausibly near the fold.
+                  loading={projectIndex < 2 ? "eager" : "lazy"}
+                  sizes="(max-width: 640px) 80vw, 384px"
                   className="z-10 absolute bottom-0"
                 />
 
@@ -39,9 +64,9 @@ const RecentProjects = () => {
                 </div>
               </div>
 
-              <h1 className="font-bold lg:text-2xl md:text-xl text-base line-clamp-1">
+              <h3 className="font-bold lg:text-2xl md:text-xl text-base line-clamp-1">
                 {item.title}
-              </h1>
+              </h3>
 
               <p className="text-sm text-purple mt-2">{item.period}</p>
 
@@ -59,7 +84,21 @@ const RecentProjects = () => {
                         transform: `translateX(-${5 * index + 2}px)`,
                       }}
                     >
-                      <img src={icon} alt="icon5" className="p-2" />
+                      {/* Hand-authored vectors, a couple of KB each - the image
+                          optimizer would only add a round trip. Deliberately no
+                          width/height attributes: box-sizing is border-box, so
+                          declaring them would fight the p-2 padding and shrink
+                          the icon. The fixed-size parent already prevents any
+                          layout shift. */}
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={icon}
+                        alt=""
+                        aria-hidden="true"
+                        loading="lazy"
+                        decoding="async"
+                        className="p-2"
+                      />
                     </div>
                   ))}
                 </div>

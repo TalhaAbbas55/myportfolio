@@ -1,15 +1,24 @@
+"use client";
+
 import React from "react";
+import dynamic from "next/dynamic";
 import { AnimatePresence, motion } from "framer-motion";
 
 import { journeyCards } from "@/data";
-import { CanvasRevealEffect } from "./ui/CanvasRevealEffect";
+
+// three.js + @react-three/fiber weigh several hundred KB and the canvas only
+// renders while a card is hovered, so keep it out of the initial bundle.
+const CanvasRevealEffect = dynamic(
+  () => import("./ui/CanvasRevealEffect").then((m) => m.CanvasRevealEffect),
+  { ssr: false },
+);
 
 const Approach = () => {
   return (
     <section className="w-full py-20">
-      <h1 className="heading">
+      <h2 className="heading">
         Beyond the <span className="text-purple">code</span>
-      </h1>
+      </h2>
       {/* remove bg-white dark:bg-black */}
       <div className="my-20 flex flex-col lg:flex-row items-center justify-center w-full gap-4">
         {journeyCards.map((item) => (
@@ -89,14 +98,14 @@ const Card = ({
         >
           {icon}
         </div>
-        <h2
+        <h3
           // change text-3xl, add text-center
           className="dark:text-white text-center text-3xl opacity-0 group-hover/canvas-card:opacity-100
-         relative z-10 text-black mt-4  font-bold group-hover/canvas-card:text-white 
+         relative z-10 text-black mt-4  font-bold group-hover/canvas-card:text-white
          group-hover/canvas-card:-translate-y-2 transition duration-200"
         >
           {title}
-        </h2>
+        </h3>
         {/* add this one for the description */}
         <p
           className="text-sm opacity-0 group-hover/canvas-card:opacity-100

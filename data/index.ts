@@ -31,12 +31,12 @@ export const gridItems = [
     className: "lg:col-span-3 md:col-span-6 md:row-span-4 lg:min-h-[60vh]",
     imgClassName: "w-full h-full",
     titleClassName: "justify-end",
-    img: "/b1.svg",
+    img: "/b1.webp",
     spareImg: "",
   },
   {
     id: 2,
-    title: "Collaborating with remote teams across the Globe",
+    title: "Collaborating with teams across the Globe",
     description: "",
     className: "lg:col-span-2 md:col-span-3 md:row-span-2",
     imgClassName: "",
@@ -63,7 +63,7 @@ export const gridItems = [
     className: "lg:col-span-2 md:col-span-3 md:row-span-1",
     imgClassName: "",
     titleClassName: "justify-start",
-    img: "/grid.svg",
+    img: "/grid.webp",
     spareImg: "/b4.svg",
   },
   {
@@ -74,8 +74,8 @@ export const gridItems = [
     className: "md:col-span-3 md:row-span-2",
     imgClassName: "absolute right-0 bottom-0 md:w-96 w-60",
     titleClassName: "justify-center md:justify-start lg:justify-center",
-    img: "/b5.svg",
-    spareImg: "/grid.svg",
+    img: "/b5.webp",
+    spareImg: "/grid.webp",
   },
   {
     id: 6,
@@ -104,7 +104,7 @@ export const projects = [
       "Real-time ticketing & venue management with QR entry, Stripe payments, and admin subscription controls.",
     details:
       "Built a real-time venue and ticketing experience with QR-based entry flows, Stripe payments, and admin subscription management across React, React Native, and Next.js surfaces.",
-    img: "/apps/neverLeft.png",
+    img: "/apps/neverLeft.webp",
     iconLists: ["/re.svg", "/next.svg", "/tail.svg", "/ts.svg"],
     link: "https://www.neverleft.co.uk/",
     linkTitle: "NeverLeft",
@@ -118,7 +118,7 @@ export const projects = [
       "Mobile wellness app for tracking health goals with journaling and progress insights.",
     details:
       "Developed a mobile application that acts as a journal for females to track their heart health progress, including personalized tracking, reminders, and visualization of trends.",
-    img: "/apps/curlCompass.png",
+    img: "/apps/curlCompass.webp",
     iconLists: ["/re.svg", "/ts.svg", "/c.svg", "/tail.svg"],
     link: "https://play.google.com/store/apps/details?id=com.hairjournel",
     linkTitle: "Play Store",
@@ -132,7 +132,7 @@ export const projects = [
       "Cross-platform book reader with bookmarks, highlights, notes, and multi-book search.",
     details:
       "Developed mobile, web, and desktop book reader application with enriched reader features including highlights, bookmarks, and notes. Built powerful search and advanced search module enabling users to search across 24+ books simultaneously.",
-    img: "/apps/aabBooks.png",
+    img: "/apps/aabBooks.webp",
     iconLists: ["/re.svg", "/ts.svg", "/tail.svg", "/c.svg"],
     link: "https://www.lucistrust.org/",
     linkTitle: "Lucis Trust",
@@ -146,7 +146,7 @@ export const projects = [
       "Workplace platform for hiring, retention, and team performance analytics.",
     details:
       "Built the OurOffice platform and tools to improve hiring, retention, and organizational performance. Enabled teams to measure what matters, turn plans into action, and engage safely and effectively.",
-    img: "/apps/OurOffice.png",
+    img: "/apps/OurOffice.webp",
     iconLists: ["/next.svg", "/ts.svg", "/c.svg", "/tail.svg"],
     link: "https://www.ouroffice.io/",
     linkTitle: "OurOffice",
@@ -160,7 +160,7 @@ export const projects = [
       "Automated electrical diagram conversion into structured BOMs and asset data.",
     details:
       "Led engineering on platform converting electrical diagrams into system-ready bills of material. Implemented OCR, domain-specific AI models, automated component counting, and structured data generation for seamless BOM and asset management integration.",
-    img: "/apps/OpenDrawing.png",
+    img: "/apps/OpenDrawing.webp",
     iconLists: ["/next.svg", "/ts.svg", "/c.svg", "/tail.svg"],
     link: "https://opendrawing.ai/",
     linkTitle: "OpenDrawing",
@@ -174,7 +174,7 @@ export const projects = [
       "AI-driven website builder with drag-and-drop UI and live preview.",
     details:
       "Built an AI-based website builder with dynamic widgets, live preview capabilities, and backend services powered by Node.js, Node-RED, and MongoDB.",
-    img: "/apps/customWebsitesClub.png",
+    img: "/apps/customWebsitesClub.webp",
     iconLists: ["/re.svg", "/tail.svg", "/ts.svg", "/c.svg"],
     link: "https://www.customwebsites.club/",
     linkTitle: "Custom Websites Club",
@@ -215,26 +215,36 @@ export const testimonials = [
   },
 ];
 
+// Each highlight leads with its headline number so the figure carries the card,
+// rather than being buried mid-sentence. Same facts as before, split apart.
 export const highlights = [
   {
     id: 1,
     label: "Experience",
-    value: "5+ years building web, mobile, and desktop products",
+    stat: "5+",
+    unit: "years",
+    value: "Building web, mobile, and desktop products end to end.",
   },
   {
     id: 2,
-    label: "Users",
-    value: "Products and systems supporting 10,000+ users",
+    label: "Reach",
+    stat: "10,000+",
+    unit: "users",
+    value: "Supported across the products and systems I have shipped.",
   },
   {
     id: 3,
     label: "Recognition",
-    value: "Top 1% on WakaTime with 1,389+ coding hours tracked",
+    stat: "Top 1%",
+    unit: "on WakaTime",
+    value: "Among 500,000+ developers, with 1,389+ coding hours tracked.",
   },
   {
     id: 4,
     label: "Impact",
-    value: "Feature turnaround improved by 25% and API performance by 40%",
+    stat: "+40%",
+    unit: "API performance",
+    value: "Plus a 25% improvement in feature turnaround time.",
   },
 ];
 
@@ -267,7 +277,7 @@ export const workExperience = [
     location: "Lahore, Pakistan",
     desc: "Built and scaled 6+ web and mobile products across React, React Native, Next.js, and Electron.js, while improving MongoDB and API response times by 30% and helping secure multiple client engagements.",
     className: "md:col-span-2",
-    thumbnail: "/exp3.svg",
+    thumbnail: "/exp3.webp",
   },
   {
     id: 4,

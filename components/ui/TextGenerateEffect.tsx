@@ -1,60 +1,48 @@
-"use client";
-import { useEffect, useMemo } from "react";
-import { motion, stagger, useAnimate } from "framer-motion";
 import { cn } from "@/lib/utils";
 
+/**
+ * Staggered word reveal for the hero headline.
+ *
+ * This used to be a framer-motion client component that rendered every word at
+ * opacity-0 and only faded them in after hydration. That made the largest text
+ * on the page invisible until the JS bundle landed, which wrecked LCP.
+ *
+ * It is now a server component using a pure CSS animation: the text ships in
+ * the initial HTML (good for LCP and for crawlers) and the reveal is layered on
+ * top as progressive enhancement.
+ */
 export const TextGenerateEffect = ({
   words,
   className,
+  as: Tag = "div",
 }: {
   words: string;
   className?: string;
+  as?: "h1" | "h2" | "div";
 }) => {
-  const [scope, animate] = useAnimate();
-  const wordsArray = useMemo(() => words.split(" "), [words]);
-
-  useEffect(() => {
-    animate(
-      "span",
-      {
-        opacity: 1,
-      },
-      {
-        duration: 2,
-        delay: stagger(0.2),
-      },
-    );
-  }, [animate, wordsArray]);
-
-  const renderWords = () => {
-    return (
-      <motion.div ref={scope}>
-        {wordsArray.map((word, idx) => {
-          return (
-            <motion.span
-              key={word + idx}
-              // change here if idx is greater than 3, change the text color to #CBACF9
-              className={` ${
-                idx > 3 ? "text-purple" : "dark:text-white text-black"
-              } opacity-0`}
-            >
-              {word}{" "}
-            </motion.span>
-          );
-        })}
-      </motion.div>
-    );
-  };
+  const wordsArray = words.split(" ");
 
   return (
-    <div className={cn("font-bold", className)}>
-      {/* mt-4 to my-4 */}
+    <Tag className={cn("font-bold", className)}>
       <div className="my-4">
-        {/* remove  text-2xl from the original */}
-        <div className=" dark:text-white text-black leading-snug tracking-wide">
-          {renderWords()}
+        <div className="dark:text-white text-black leading-snug tracking-wide">
+          {wordsArray.map((word, idx) => (
+            <span
+              key={word + idx}
+              // idx > 3 switches the tail of the headline to the accent colour
+              className={cn(
+                "animate-word-appear",
+                idx > 3 ? "text-purple" : "dark:text-white text-black",
+              )}
+              // Total reveal stays under ~0.8s so the headline (the LCP
+              // element) is not held transparent for long.
+              style={{ animationDelay: `${idx * 0.08}s` }}
+            >
+              {word}{" "}
+            </span>
+          ))}
         </div>
       </div>
-    </div>
+    </Tag>
   );
 };

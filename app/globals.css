@@ -76,6 +76,40 @@
   button {
     @apply active:outline-none;
   }
+
+  /* The navbar is fixed, so an in-page anchor would otherwise land with the
+     section's heading tucked underneath it. Offset every anchor target by a
+     little more than the bar's height. */
+  section[id],
+  footer[id] {
+    scroll-margin-top: 6rem;
+  }
+
+  @media (min-width: 768px) {
+    section[id],
+    footer[id] {
+      scroll-margin-top: 8rem;
+    }
+  }
+}
+
+/* Respect users who ask for less motion, and make sure any staggered reveal
+   resolves to visible text rather than staying at opacity 0. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .animate-word-appear {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }
 
 @layer utilities {

@@ -146,6 +146,10 @@ const config = {
             transform: "translate(calc(-50% - 0.5rem))",
           },
         },
+        "word-appear": {
+          from: { opacity: "0", transform: "translateY(4px)" },
+          to: { opacity: "1", transform: "none" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -159,6 +163,11 @@ const config = {
         fifth: "moveInCircle 20s ease infinite",
         scroll:
           "scroll var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite",
+        // `both` holds opacity:0 through the stagger delay, then holds the
+        // revealed state - so the headline can never end up stuck invisible.
+        // Kept short on purpose: this is the LCP element, and LCP does not
+        // count a still-transparent element.
+        "word-appear": "word-appear 0.4s ease-out both",
       },
     },
   },

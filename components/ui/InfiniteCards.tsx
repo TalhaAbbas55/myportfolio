@@ -124,7 +124,17 @@ export const InfiniteMovingCards = ({
                 <div className="relative z-20 mt-6 flex flex-row items-center">
                   {/* add this div for the profile img */}
                   <div className="me-3">
-                    <img src={item.avatar ?? "/profile.svg"} alt="profile" />
+                    {/* 64px avatar vectors, ~0.5 KB each. */}
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={item.avatar ?? "/profile.webp"}
+                      alt=""
+                      aria-hidden="true"
+                      width={64}
+                      height={64}
+                      loading="lazy"
+                      decoding="async"
+                    />
                   </div>
                   <span className="flex flex-col gap-1">
                     {/* change text color, font-normal to font-bold, text-xl */}

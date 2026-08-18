@@ -4,27 +4,25 @@
 
 import * as Sentry from "@sentry/nextjs";
 
-Sentry.init({
-  dsn: "https://7b883d075caa19b41fd9b00ae313a1c6@o4506813739368448.ingest.us.sentry.io/4507222371729408",
+// The DSN used to be hardcoded to the project this template was forked from,
+// so every visitor's errors and session replays were shipped to someone else's
+// Sentry org. It is now opt-in: set NEXT_PUBLIC_SENTRY_DSN to enable it.
+const dsn = process.env.NEXT_PUBLIC_SENTRY_DSN;
 
-  // Adjust this value in production, or use tracesSampler for greater control
-  tracesSampleRate: 1,
+if (dsn) {
+  Sentry.init({
+    dsn,
 
-  // Setting this option to true will print useful information to the console while you're setting up Sentry.
-  debug: false,
+    // Was 1 (a trace for every single page load). 10% is plenty of signal for
+    // a portfolio and avoids a network request on every visit.
+    tracesSampleRate: 0.1,
 
-  replaysOnErrorSampleRate: 1.0,
+    debug: false,
 
-  // This sets the sample rate to be 10%. You may want this to be 100% while
-  // in development and sample at a lower rate in production
-  replaysSessionSampleRate: 0.1,
-
-  // You can remove this option if you're not planning to use the Sentry Session Replay feature:
-  integrations: [
-    Sentry.replayIntegration({
-      // Additional Replay configuration goes in here, for example:
-      maskAllText: true,
-      blockAllMedia: true,
-    }),
-  ],
-});
+    // Session Replay was previously always on, which added roughly 50-60 KB
+    // gzipped of JavaScript to every page load. Dropped entirely - it earns
+    // nothing on a static portfolio.
+    replaysOnErrorSampleRate: 0,
+    replaysSessionSampleRate: 0,
+  });
+}
