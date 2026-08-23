@@ -54,7 +54,7 @@ const Hero = () => {
            */}
           <TextGenerateEffect
             as="h1"
-            words="Full-stack product engineer and Technical Lead"
+            words="Senior Software Engineer and Technical Lead"
             className="text-center text-[40px] md:text-5xl lg:text-6xl"
           />
 

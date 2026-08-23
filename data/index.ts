@@ -1,6 +1,6 @@
 export const personalInfo = {
   name: "Talha Abbas",
-  headline: "Full-stack product engineer and Technical Lead",
+  headline: "Senior Software Engineer and Technical Lead",
   title: "Software Engineer | Full-Stack Developer | Technical Lead",
   summary:
     "5+ years delivering systems at scale. Experience spans frontend architecture, backend design, mobile platforms, and shipping products with global teams. Core stack: React, Next.js, Node.js, MongoDB, Express—with depth in performance, API design, and production reliability.",
