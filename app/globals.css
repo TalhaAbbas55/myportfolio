@@ -6,80 +6,83 @@
   :root {
     --background: 0 0% 100%;
     --foreground: 240 10% 3.9%;
-
     --card: 0 0% 100%;
     --card-foreground: 240 10% 3.9%;
-
     --popover: 0 0% 100%;
     --popover-foreground: 240 10% 3.9%;
-
     --primary: 240 5.9% 10%;
     --primary-foreground: 0 0% 98%;
-
     --secondary: 240 4.8% 95.9%;
     --secondary-foreground: 240 5.9% 10%;
-
     --muted: 240 4.8% 95.9%;
     --muted-foreground: 240 3.8% 46.1%;
-
     --accent: 240 4.8% 95.9%;
     --accent-foreground: 240 5.9% 10%;
-
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
-
     --border: 240 5.9% 90%;
     --input: 240 5.9% 90%;
     --ring: 240 10% 3.9%;
-
-    --radius: 0.5rem;
+    --radius: 0.75rem;
   }
 
   .dark {
-    --background: 240 10% 3.9%;
+    --background: 232 55% 4%;
     --foreground: 0 0% 98%;
-
-    --card: 240 10% 3.9%;
+    --card: 232 40% 8%;
     --card-foreground: 0 0% 98%;
-
-    --popover: 240 10% 3.9%;
+    --popover: 232 40% 8%;
     --popover-foreground: 0 0% 98%;
-
     --primary: 0 0% 98%;
     --primary-foreground: 240 5.9% 10%;
-
     --secondary: 240 3.7% 15.9%;
     --secondary-foreground: 0 0% 98%;
-
     --muted: 240 3.7% 15.9%;
     --muted-foreground: 240 5% 64.9%;
-
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
-
+    --accent: 258 90% 76%;
+    --accent-foreground: 240 5.9% 10%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-
     --border: 240 3.7% 15.9%;
     --input: 240 3.7% 15.9%;
-    --ring: 240 4.9% 83.9%;
+    --ring: 258 90% 76%;
   }
 }
 
 @layer base {
   * {
-    @apply border-border !scroll-smooth;
+    @apply border-border;
   }
+
+  html {
+    scroll-behavior: smooth;
+    /* The fixed nav would otherwise cover the top of any anchored section. */
+    scroll-padding-top: 6rem;
+  }
+
   body {
-    @apply bg-background text-foreground;
+    @apply bg-ink-950 text-content;
+    /* The Aurora layer is fixed behind everything, so the body itself must not
+       paint an opaque colour over it on overscroll. */
+    min-height: 100svh;
   }
+
   button {
     @apply active:outline-none;
   }
 
-  /* The navbar is fixed, so an in-page anchor would otherwise land with the
-     section's heading tucked underneath it. Offset every anchor target by a
-     little more than the bar's height. */
+  /* Entrance animations translate elements sideways by a couple of dozen
+     pixels before settling. Without this, those transforms briefly widen the
+     document and the page gains a horizontal scrollbar mid-reveal on narrow
+     screens.
+
+     `clip` rather than `hidden` on purpose: `hidden` would make this a scroll
+     container, which breaks `position: sticky` descendants and can interfere
+     with smooth anchor scrolling. `clip` just clips. */
+  main {
+    overflow-x: clip;
+  }
+
   section[id],
   footer[id] {
     scroll-margin-top: 6rem;
@@ -88,14 +91,88 @@
   @media (min-width: 768px) {
     section[id],
     footer[id] {
-      scroll-margin-top: 8rem;
+      scroll-margin-top: 7rem;
     }
+  }
+
+  /* Consistent focus ring everywhere, instead of each component inventing one. */
+  :focus-visible {
+    @apply outline-none ring-2 ring-accent ring-offset-2 ring-offset-ink-950;
+  }
+
+  ::selection {
+    background: rgba(167, 139, 250, 0.3);
+    color: #fff;
   }
 }
 
-/* Respect users who ask for less motion, and make sure any staggered reveal
-   resolves to visible text rather than staying at opacity 0. */
+/* Themed scrollbar - a default grey bar against this palette looks unfinished. */
+@layer base {
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(167, 139, 250, 0.35) transparent;
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(
+      180deg,
+      rgba(167, 139, 250, 0.45),
+      rgba(34, 211, 238, 0.35)
+    );
+    border-radius: 999px;
+    border: 3px solid transparent;
+    background-clip: content-box;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(
+      180deg,
+      rgba(167, 139, 250, 0.7),
+      rgba(34, 211, 238, 0.6)
+    );
+    background-clip: content-box;
+  }
+}
+
+@layer utilities {
+  .heading {
+    @apply text-center text-3xl font-bold tracking-tight sm:text-4xl md:text-5xl;
+  }
+
+  /* Gradient text that stays legible if the clip fails (older Safari). */
+  .text-gradient {
+    @apply bg-grad-brand bg-clip-text text-transparent;
+  }
+
+  /* Standard glass card surface. */
+  .surface {
+    @apply rounded-3xl border border-white/[0.08] bg-ink-800/60 backdrop-blur-xl;
+  }
+}
+
+/*
+ * Reduced motion.
+ *
+ * Deliberately not a blanket `animation: none` on everything: several elements
+ * (the staggered word reveal, framer-motion entrances) start at opacity 0 and
+ * rely on their animation to become visible. Killing the animation outright
+ * would leave that content permanently invisible, so those are forced to their
+ * resolved, visible state instead.
+ */
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto !important;
+  }
+
   *,
   *::before,
   *::after {
@@ -105,15 +182,23 @@
     scroll-behavior: auto !important;
   }
 
-  .animate-word-appear {
+  .animate-word-appear,
+  .animate-fade-up {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
   }
-}
 
-@layer utilities {
-  .heading {
-    @apply font-bold text-4xl md:text-5xl text-center;
+  /* Ambient decoration is pure motion with no informational value - hold it
+     still rather than letting it flash to a final frame. */
+  .animate-aurora,
+  .animate-aurora-slow,
+  .animate-float,
+  .animate-marquee,
+  .animate-marquee-reverse,
+  .animate-pulse-ring,
+  .animate-spin-slow,
+  .animate-blink {
+    animation: none !important;
   }
 }

@@ -125,6 +125,18 @@ export const BentoGridItem = ({
   // plays after a click. It is now fetched on demand.
   const [confetti, setConfetti] = useState<unknown>(null);
 
+  const handleSpotlight = (e: React.MouseEvent<HTMLDivElement>) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    e.currentTarget.style.setProperty(
+      "--bx",
+      `${((e.clientX - rect.left) / rect.width) * 100}%`,
+    );
+    e.currentTarget.style.setProperty(
+      "--by",
+      `${((e.clientY - rect.top) / rect.height) * 100}%`,
+    );
+  };
+
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(personalInfo.email);
@@ -142,19 +154,23 @@ export const BentoGridItem = ({
 
   return (
     <div
+      onMouseMove={handleSpotlight}
       className={cn(
-        // remove p-4 rounded-3xl dark:bg-black dark:border-white/[0.2] bg-white  border border-transparent, add border border-white/[0.1] overflow-hidden relative
-        "row-span-1 relative overflow-hidden rounded-3xl border border-white/[0.1] group/bento hover:shadow-xl transition duration-200 shadow-input dark:shadow-none justify-between flex flex-col space-y-4",
+        "group/bento relative row-span-1 flex flex-col justify-between space-y-4 overflow-hidden rounded-3xl",
+        "border border-white/[0.08] bg-ink-800/60 backdrop-blur-xl",
+        "transition-all duration-500 hover:border-accent/30 hover:shadow-glow",
         className,
       )}
-      style={{
-        //   add these two
-        //   you can generate the color from here https://cssgradient.io/
-        background: "rgb(4,7,29)",
-        backgroundColor:
-          "linear-gradient(90deg, rgba(4,7,29,1) 0%, rgba(12,14,35,1) 100%)",
-      }}
     >
+      {/* Pointer spotlight, driven by CSS vars so tracking never re-renders. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 z-20 opacity-0 transition-opacity duration-500 group-hover/bento:opacity-100"
+        style={{
+          background:
+            "radial-gradient(480px circle at var(--bx,50%) var(--by,50%), rgba(167,139,250,0.10), transparent 70%)",
+        }}
+      />
       {/* add img divs */}
       <div className={`${id === 6 && "flex justify-center"} h-full`}>
         <div className="w-full h-full absolute">
@@ -193,14 +209,14 @@ export const BentoGridItem = ({
           )}
         >
           {/* change the order of the title and des, font-extralight, remove text-xs text-neutral-600 dark:text-neutral-300 , change the text-color */}
-          <div className="font-sans font-extralight md:max-w-32 md:text-xs lg:text-base text-sm text-[#C1C2D3] z-10">
+          <div className="z-10 font-mono text-[0.62rem] uppercase tracking-[0.16em] text-accent-soft md:max-w-32">
             {description}
           </div>
           {/* add text-3xl max-w-96 , remove text-neutral-600 dark:text-neutral-300*/}
           {/* remove mb-2 mt-2 */}
           <div
             className={cn(
-              "font-sans text-lg lg:text-3xl font-bold z-10",
+              "z-10 mt-3 font-sans text-base font-semibold leading-snug tracking-tight text-content lg:text-2xl",
               id === 3 ? "max-w-full lg:max-w-[58%] leading-tight" : "max-w-96",
             )}
           >
@@ -218,7 +234,7 @@ export const BentoGridItem = ({
                 {leftLists.map((item, i) => (
                   <span
                     key={i}
-                    className="min-h-11 lg:min-h-14 px-3 py-2 text-xs lg:text-sm rounded-xl text-center bg-[#10132E] border border-white/10 flex items-center justify-center text-white-200"
+                    className="flex min-h-11 items-center justify-center rounded-xl border border-white/[0.08] bg-white/[0.03] px-3 py-2 text-center text-xs text-content-muted transition-colors duration-300 hover:border-accent/35 hover:bg-accent/[0.07] hover:text-content lg:min-h-14 lg:text-sm"
                   >
                     {item}
                   </span>
@@ -226,7 +242,7 @@ export const BentoGridItem = ({
                 {rightLists.map((item, i) => (
                   <span
                     key={i}
-                    className="min-h-11 lg:min-h-14 px-3 py-2 text-xs lg:text-sm rounded-xl text-center bg-[#10132E] border border-white/10 flex items-center justify-center text-white-200"
+                    className="flex min-h-11 items-center justify-center rounded-xl border border-white/[0.08] bg-white/[0.03] px-3 py-2 text-center text-xs text-content-muted transition-colors duration-300 hover:border-accent/35 hover:bg-accent/[0.07] hover:text-content lg:min-h-14 lg:text-sm"
                   >
                     {item}
                   </span>

@@ -1,8 +1,9 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 
 import "./globals.css";
 import { ThemeProvider } from "./provider";
+import { Aurora } from "@/components/ui/Aurora";
 import { personalInfo } from "@/data";
 import { siteUrl } from "@/lib/site";
 
@@ -16,8 +17,16 @@ const inter = Inter({
   // next/font fetch a separate static file per weight instead.
 });
 
+// Monospace carries the eyebrows, metric labels, code samples and the Cmd-K
+// palette. It is what makes the site read as built by an engineer.
+const jetbrains = JetBrains_Mono({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-mono",
+});
+
 export const viewport: Viewport = {
-  themeColor: "#000319",
+  themeColor: "#04050D",
   colorScheme: "dark",
   width: "device-width",
   initialScale: 1,
@@ -41,6 +50,12 @@ export const metadata: Metadata = {
     "full-stack developer",
     "software engineer",
     "technical lead",
+    "AI engineer",
+    "LLM engineer",
+    "RAG",
+    "LangChain",
+    "LangGraph",
+    "Python developer",
     "React developer",
     "Next.js developer",
     "Node.js developer",
@@ -114,6 +129,12 @@ const personSchema = {
     "MongoDB",
     "React Native",
     "Nest.js",
+    "Python",
+    "LangChain",
+    "LangGraph",
+    "Retrieval-Augmented Generation",
+    "Large Language Models",
+    "Vector Databases",
   ],
 };
 
@@ -132,7 +153,21 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
         />
       </head>
-      <body className={inter.className}>
+      <body
+        className={`${inter.variable} ${jetbrains.variable} font-sans bg-ink-950 text-content antialiased selection:bg-accent/30 selection:text-white`}
+      >
+        {/* Ambient background lives at the layout level so the colour drift is
+            continuous across sections rather than restarting at each one. */}
+        <Aurora />
+
+        {/* Keyboard users get a way past the fixed nav. */}
+        <a
+          href="#about"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[9000] focus:rounded-xl focus:border focus:border-accent/40 focus:bg-ink-800 focus:px-4 focus:py-2 focus:text-sm focus:text-content"
+        >
+          Skip to content
+        </a>
+
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
