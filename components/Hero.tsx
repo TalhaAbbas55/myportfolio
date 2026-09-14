@@ -1,6 +1,5 @@
 "use client";
 
-import dynamic from "next/dynamic";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import { FaArrowRight, FaGithub, FaLinkedinIn } from "react-icons/fa6";
@@ -11,13 +10,6 @@ import { GradientButton } from "./ui/GradientButton";
 import { RotatingRoles } from "./ui/RotatingRoles";
 import { Marquee } from "./ui/Marquee";
 import { Magnetic } from "./ui/Magnetic";
-
-// three.js is ~600 KB. It has no business in the initial bundle for a hero
-// whose text must paint immediately, so the canvas streams in after mount.
-const NeuralCore = dynamic(
-  () => import("./ui/NeuralCore").then((m) => m.NeuralCore),
-  { ssr: false },
-);
 
 const Hero = () => {
   const ref = useRef<HTMLDivElement>(null);
@@ -31,7 +23,6 @@ const Hero = () => {
   });
   const copyY = useTransform(scrollYProgress, [0, 1], [0, 90]);
   const copyOpacity = useTransform(scrollYProgress, [0, 0.7], [1, 0]);
-  const coreScale = useTransform(scrollYProgress, [0, 1], [1, 1.18]);
 
   return (
     <section
@@ -39,15 +30,6 @@ const Hero = () => {
       id="home"
       className="relative flex min-h-[100svh] flex-col justify-center pb-16 pt-32 md:pt-36"
     >
-      {/* 3D core. Sits behind the copy on small screens and beside it on
-          large ones, where there is room for both to breathe. */}
-      <motion.div
-        style={{ scale: coreScale }}
-        className="pointer-events-none absolute inset-0 flex items-center justify-center lg:left-auto lg:right-0 lg:w-1/2 lg:justify-center"
-      >
-        <NeuralCore className="h-[min(92vw,42rem)] w-[min(92vw,42rem)] opacity-[0.55] lg:h-[min(40rem,46vw)] lg:w-[min(40rem,46vw)] lg:opacity-100" />
-      </motion.div>
-
       <motion.div
         style={{ y: copyY, opacity: copyOpacity }}
         className="relative z-10 w-full"
