@@ -190,7 +190,7 @@ const RecentProjects = () => {
         eyebrow="Selected work"
         title="Products I"
         accent="shipped"
-        lede="Live products with real users and real numbers — not tutorial clones. Each card links to the deployed thing."
+        lede="Live products with real users and real numbers. Each card links to the deployed product."
       />
 
       {/* Featured: bigger, two-up */}

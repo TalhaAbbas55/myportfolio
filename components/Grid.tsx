@@ -9,7 +9,7 @@ const Grid = () => (
       eyebrow="About"
       title="Engineer who owns the"
       accent="whole system"
-      lede="From database schema and API contracts through to the interface that consumes them — and increasingly, the model reasoning in between."
+      lede="From database schema and API contracts through to the interface that consumes them, and the AI layer in between."
     />
 
     <BentoGrid className="mt-16 w-full">

@@ -16,11 +16,11 @@ export const personalInfo = {
     "Technical Lead",
   ],
   title: "Full-Stack Software Engineer | AI Engineer | Technical Lead",
-  tagline: "I build production systems — and the AI that runs inside them.",
+  tagline: "I build production systems and the AI that runs inside them.",
   summary:
-    "Full-Stack Software Engineer with 5+ years architecting and shipping production web, mobile and desktop applications with React, Next.js, Node.js and MongoDB — now building LLM-powered systems with Python, LangChain, LangGraph, RAG pipelines and vector databases. Promoted to Senior after leading 15+ end-to-end builds for international clients, from database schema through deployed UI.",
+    "Full-Stack Software Engineer with 5+ years architecting and shipping production web, mobile and desktop applications with React, Next.js, Node.js and MongoDB, plus LLM-powered systems with Python, LangChain, LangGraph, RAG pipelines and vector databases. Promoted to Senior after leading 15+ end-to-end builds for international clients, from database schema through deployed UI.",
   shortSummary:
-    "5+ years shipping production software end to end. Now building agentic AI systems — RAG, LangGraph, vector search — on top of that foundation.",
+    "Full-stack engineer with 5+ years shipping production web, mobile and desktop products end to end, and building AI systems with LLMs, RAG, LangChain and LangGraph.",
   email: "talhaatdev@gmail.com",
   phone: "+92 309 5589184",
   alternatePhone: "0309 5589184",
@@ -55,7 +55,7 @@ export const heroStats = [
   { value: "5+", label: "Years shipping" },
   { value: "15+", label: "End-to-end builds" },
   { value: "10k+", label: "Users reached" },
-  { value: "Top 1%", label: "WakaTime 2024–25" },
+  { value: "Top 1%", label: "WakaTime 2024 & 2025" },
 ];
 
 /* ------------------------------------------------------------------ *
@@ -66,7 +66,7 @@ export const gridItems = [
   {
     id: 1,
     title:
-      "I build production software end to end — from database schema and API contracts through to the interface that consumes them.",
+      "I build production software end to end, from database schema and API contracts through to the interface that consumes them.",
     description: "Profile",
     className: "lg:col-span-3 md:col-span-6 md:row-span-4 lg:min-h-[60vh]",
     imgClassName: "w-full h-full",
@@ -87,7 +87,7 @@ export const gridItems = [
   {
     id: 3,
     title:
-      "Frontend, backend, mobile, desktop and now AI — the full surface area needed to ship a complete system.",
+      "Frontend, backend, mobile, desktop and AI: the full surface area needed to ship a complete system.",
     description: "Tech stack",
     className: "lg:col-span-2 md:col-span-3 md:row-span-2",
     imgClassName: "",
@@ -98,7 +98,7 @@ export const gridItems = [
   {
     id: 4,
     title:
-      "Top 1% of 500,000+ developers on WakaTime, two years running — with 1,389+ tracked coding hours per year.",
+      "Top 1% of 500,000+ developers on WakaTime, two years running, with 1,389+ tracked coding hours per year.",
     description: "Highlights",
     className: "lg:col-span-2 md:col-span-3 md:row-span-1",
     imgClassName: "",
@@ -109,8 +109,8 @@ export const gridItems = [
   {
     id: 5,
     title:
-      "Currently building LLM-powered products: RAG pipelines, agentic workflows with LangGraph, and custom-trained OCR models in production.",
-    description: "What I'm building now",
+      "LLM-powered products in production: RAG pipelines, agentic workflows with LangGraph, and custom-trained OCR models.",
+    description: "AI in production",
     className: "md:col-span-3 md:row-span-2",
     imgClassName: "absolute right-0 bottom-0 md:w-96 w-60",
     titleClassName: "justify-center md:justify-start lg:justify-center",
@@ -136,13 +136,13 @@ export const stackLists = {
 };
 
 /* ------------------------------------------------------------------ *
- * AI Lab — the section this portfolio was missing entirely
+ * AI Lab
  * ------------------------------------------------------------------ */
 
 export const aiIntro = {
   eyebrow: "AI Engineering",
   title: "Building with LLMs, not just around them",
-  body: "The last two years of my work have moved from CRUD to cognition. I design retrieval pipelines, orchestrate multi-step agents, train domain-specific models, and put all of it behind APIs that hold up in production — the same engineering discipline, applied to a probabilistic stack.",
+  body: "I design retrieval pipelines, orchestrate multi-step agents, train domain-specific models, and put all of it behind APIs that hold up in production. The same engineering discipline, applied to a probabilistic stack.",
 };
 
 /** The RAG pipeline diagram animates through these stages in order. */
@@ -186,7 +186,7 @@ export const aiCapabilities = [
     icon: "database",
     accent: "cyan" as const,
     description:
-      "End-to-end retrieval-augmented generation: document ingestion, semantic chunking, embedding, vector search and grounded generation with citations — built so answers stay traceable to source.",
+      "End-to-end retrieval-augmented generation: document ingestion, semantic chunking, embedding, vector search and grounded generation with citations, built so answers stay traceable to source.",
     tags: ["Chunking", "Embeddings", "Vector DBs", "Hybrid search"],
   },
   {
@@ -195,7 +195,7 @@ export const aiCapabilities = [
     icon: "workflow",
     accent: "violet" as const,
     description:
-      "Multi-step agents with LangGraph: stateful graphs, tool calling, routing and human-in-the-loop checkpoints — so an agent can be reasoned about and debugged rather than just prompted at.",
+      "Multi-step agents with LangGraph: stateful graphs, tool calling, routing and human-in-the-loop checkpoints, so an agent can be reasoned about and debugged rather than just prompted at.",
     tags: ["LangGraph", "Tool calling", "State machines", "Guardrails"],
   },
   {
@@ -204,7 +204,7 @@ export const aiCapabilities = [
     icon: "sparkles",
     accent: "pink" as const,
     description:
-      "Dynamic prompt templates, structured output, streaming responses, token budgeting and evaluation loops — the unglamorous layer that decides whether an AI feature is shippable.",
+      "Dynamic prompt templates, structured output, streaming responses, token budgeting and evaluation loops: the layer that decides whether an AI feature is shippable.",
     tags: ["LangChain", "Structured output", "Streaming", "Evals"],
   },
   {
@@ -213,7 +213,7 @@ export const aiCapabilities = [
     icon: "scan",
     accent: "teal" as const,
     description:
-      "Trained a domain-specific model for electrical-diagram OCR and component counting at OpenDrawing — thousands of drawings processed at 90%+ accuracy, replacing days of manual takeoff.",
+      "Trained a domain-specific model for electrical-diagram OCR and component counting at OpenDrawing. Thousands of drawings processed at 90%+ accuracy, replacing days of manual takeoff.",
     tags: ["OCR", "Fine-tuning", "Computer vision", "Production ML"],
   },
 ];
@@ -261,7 +261,7 @@ export const certifications = [
 ];
 
 /* ------------------------------------------------------------------ *
- * Skills — categorised, with the AI track added
+ * Skills, categorised
  * ------------------------------------------------------------------ */
 
 export const skillCategories = [
@@ -423,7 +423,7 @@ export const projects = [
     summary:
       "LangChain-driven survey engine with dynamic prompt templates and Twilio SMS, serving 10,000+ users.",
     details:
-      "Built an AI-powered survey application using LangChain with dynamic prompt templates and Twilio SMS integration, handling 10,000+ users. The wider OurOffice platform improves hiring, retention and organizational performance — letting teams measure what matters and turn plans into action.",
+      "Built an AI-powered survey application using LangChain with dynamic prompt templates and Twilio SMS integration, handling 10,000+ users. The wider OurOffice platform improves hiring, retention and organizational performance, letting teams measure what matters and turn plans into action.",
     metrics: [
       { value: "10,000+", label: "Users handled" },
       { value: "LangChain", label: "Prompt engine" },
@@ -600,7 +600,7 @@ export const highlights = [
 ];
 
 /* ------------------------------------------------------------------ *
- * Experience — verbatim from the CV
+ * Experience, verbatim from the CV
  * ------------------------------------------------------------------ */
 
 export const workExperience = [

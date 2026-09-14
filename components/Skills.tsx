@@ -94,7 +94,7 @@ const Skills = () => {
         eyebrow="Capabilities"
         title="The stack I"
         accent="actually ship with"
-        lede="Not a wishlist — these are the tools behind the products above, grouped by where they sit in the system."
+        lede="The tools behind the products above, grouped by where they sit in the system."
       />
 
       {/* Metrics */}

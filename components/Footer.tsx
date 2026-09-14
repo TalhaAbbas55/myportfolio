@@ -58,8 +58,8 @@ const Footer = () => {
 
             <p className="mt-5 max-w-xl text-pretty text-sm leading-relaxed text-content-muted sm:text-base">
               {personalInfo.availability}. Based in {personalInfo.location} (
-              {personalInfo.timezone}) and comfortable working across time zones
-              — email, WhatsApp or LinkedIn all reach me.
+              {personalInfo.timezone}) and comfortable working across time zones.
+              Email, WhatsApp or LinkedIn all reach me.
             </p>
 
             <div className="mt-10 flex flex-wrap items-center justify-center gap-3">

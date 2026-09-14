@@ -39,7 +39,7 @@ const Experience = () => {
         eyebrow="Career"
         title="Five years of"
         accent="shipping"
-        lede="Promoted from Software Engineer to Senior after leading 15+ end-to-end builds for international clients — from database schema through deployed UI."
+        lede="Promoted from Software Engineer to Senior after leading 15+ end-to-end builds for international clients, from database schema through deployed UI."
       />
 
       <div ref={trackRef} className="relative mt-16">
