@@ -276,9 +276,17 @@ export const NeuralBackdrop = () => {
   const opacity = useTransform(scrollY, [0, vh * 0.9], [1, 0.6]);
 
   useEffect(() => {
-    // Pure decoration: skip the WebGL context entirely for reduced motion.
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    setAllowed(true);
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    // On phones/small tablets the sphere sits directly behind body copy with
+    // no room to breathe, and a live WebGL scene is heavy on that hardware.
+    // Below the desktop breakpoint we skip it entirely rather than render it
+    // dimmed, which is both faster and easier to read. A media query (rather
+    // than a one-off innerWidth check) keeps this correct when the viewport
+    // crosses the breakpoint without a full reload, e.g. devtools' responsive
+    // mode or rotating a tablet.
+    const isDesktop = window.matchMedia("(min-width: 1024px)");
+    const updateAllowed = () => setAllowed(isDesktop.matches && !reducedMotion.matches);
+    updateAllowed();
     setVh(window.innerHeight);
 
     const onMove = (e: PointerEvent) => {
@@ -291,9 +299,13 @@ export const NeuralBackdrop = () => {
 
     window.addEventListener("pointermove", onMove, { passive: true });
     window.addEventListener("resize", onResize);
+    isDesktop.addEventListener("change", updateAllowed);
+    reducedMotion.addEventListener("change", updateAllowed);
     return () => {
       window.removeEventListener("pointermove", onMove);
       window.removeEventListener("resize", onResize);
+      isDesktop.removeEventListener("change", updateAllowed);
+      reducedMotion.removeEventListener("change", updateAllowed);
     };
   }, []);
 
@@ -305,8 +317,7 @@ export const NeuralBackdrop = () => {
       style={{ opacity }}
       className="pointer-events-none fixed inset-0 -z-[5]"
     >
-      {/* Dimmer on small screens, where the sphere sits under the text. */}
-      <div className="h-full w-full opacity-50 lg:opacity-100">
+      <div className="h-full w-full">
         <Canvas
           camera={{ position: [0, 0, 7.2], fov: 45 }}
           dpr={[1, 1.5]}
